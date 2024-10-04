@@ -21,11 +21,11 @@
 				"{}"
 			],
 			"console": "integratedTerminal",
-			"outFiles": ["${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/**/*.js"],
+			"outFiles": ["${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/plugin.js"],
 			"sourceMaps": true,
 			"resolveSourceMapLocations": [
 				"${workspaceFolder}/**",
-				"!**/node_modules/**"
+				"!**/node_modules/**",
 			],
 			"preLaunchTask": "npm: build"
 		}

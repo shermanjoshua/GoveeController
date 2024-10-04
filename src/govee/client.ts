@@ -2,14 +2,13 @@ import streamDeck from "@elgato/streamdeck";
 import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import crypto from "node:crypto";
 import type { GlobalSettings } from "../global-settings";
-import type { CapabilityIdentifier, DIYScene, LightScene } from "./capability";
+import type { CapabilityIdentifier, DIYScene, LightScene, SnapshotScene } from "./capability";
 import type { GoveeResponse } from "./common";
 import type { ControlRequest, ControlResponse } from "./control";
 import type { Device, DeviceMetadata } from "./device";
 import type { StateRequest, StateResponse } from "./state";
 
 let devicesCache: DeviceMetadata[] | undefined = undefined;
-let apiKey: string | undefined;
 
 /**
  * Provides a client capable of interacting with the Govee API.
@@ -154,6 +153,32 @@ class GoveeClient {
 	}
 
 	/**
+	 * Gets the Snapshot scenes for a device.
+	 * @param device The device.
+	 * @returns Available DIY scenes.
+	 */
+	public async getSnapshotScenes(device: Device): Promise<SnapshotScene["parameters"]["options"]> {
+		const res = await axios.post<GoveeResponse<DeviceMetadata>>(
+			// this url is a guess...
+			"https://openapi.api.govee.com/router/api/v1/device/snapshot-scenes",
+			{
+				payload: device,
+				requestId: crypto.randomUUID()
+			},
+			{ headers: await this.getHeaders() }
+		);
+
+		this.validate(res, "Failed to get light scenes.");
+		const [capability] = res.data.payload.capabilities;
+
+		if (capability?.instance === "snapshotScene" && capability.type === "devices.capabilities.dynamic_scene") {
+			return capability.parameters.options;
+		}
+
+		throw new Error("Device does not support Snapshot scenes");
+	}
+
+	/**
 	 * Sets the device brightness.
 	 * @param device The device.
 	 * @param brightness New brightness.
@@ -227,6 +252,22 @@ class GoveeClient {
 			device,
 			{
 				instance: "lightScene",
+				type: "devices.capabilities.dynamic_scene"
+			},
+			sceneId
+		);
+	}
+
+	/**
+	 * Sets the Snapshot scene for the specified device.
+	 * @param device The device.
+	 * @param sceneId Scene identifier.
+	 */
+	public async setSnapshotScene(device: Device, sceneId: number): Promise<void> {
+		await this.control(
+			device,
+			{
+				instance: "snapshotScene",
 				type: "devices.capabilities.dynamic_scene"
 			},
 			sceneId
@@ -313,10 +354,10 @@ class GoveeClient {
 	 */
 	private async getHeaders(): Promise<RawAxiosRequestHeaders> {
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
-		console.log('Global settings in getHeaders:', globalSettings);
-		
+		console.log("Global settings in getHeaders:", globalSettings);
+
 		const apiKey = globalSettings.apiKey;
-		console.log('Extracted API key:', apiKey);
+		console.log("Extracted API key:", apiKey);
 
 		if (!apiKey) {
 			throw new Error("Govee API key has not been set.");

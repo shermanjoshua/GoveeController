@@ -3,26 +3,26 @@ function initializePlugin() {
 		console.error("streamDeckClient is not initialized");
 		return;
 	}
-	
+
 	let localApiKey = null;
 	let isDeviceCollectionDirty = false;
 
-	const apiKeyInput = document.getElementById('api-key-input');
-	const refreshApiKeyButton = document.getElementById('refresh-api-key');
-	const connectButton = document.getElementById('connect-button');
-	const messageElement = document.getElementById('message');
-	const deviceSettings = document.getElementById('device-settings');
-	const deviceSelect = document.getElementById('device-select');
-	const actionSelect = document.getElementById('action-select');
+	const apiKeyInput = document.getElementById("api-key-input");
+	const refreshApiKeyButton = document.getElementById("refresh-api-key");
+	const connectButton = document.getElementById("connect-button");
+	const messageElement = document.getElementById("message");
+	const deviceSettings = document.getElementById("device-settings");
+	const deviceSelect = document.getElementById("device-select");
+	const actionSelect = document.getElementById("action-select");
 
 	// Check if all elements are found
-	if (!apiKeyInput || !refreshApiKeyButton || !connectButton || !messageElement || !deviceSettings || !deviceSelect || !actionSelect) {
+	if (!apiKeyInput || !refreshApiKeyButton || !connectButton || !messageElement || !deviceSettings || !deviceSelect) {
 		console.error("One or more required elements not found in the DOM");
 		return;
 	}
 
 	const showDeviceSettings = (show) => {
-		deviceSettings.classList.toggle('hidden', !show);
+		deviceSettings.classList.toggle("hidden", !show);
 		if (show && isDeviceCollectionDirty) {
 			deviceSelect.refresh();
 		}
@@ -37,13 +37,13 @@ function initializePlugin() {
 
 	const showMessage = (message, isError = false) => {
 		messageElement.textContent = message;
-		messageElement.className = 'sdpi-item-value';
+		messageElement.className = "sdpi-item-value";
 		if (isError) {
-			messageElement.classList.add('error');
+			messageElement.classList.add("error");
 		} else {
-			messageElement.classList.add('success');
+			messageElement.classList.add("success");
 		}
-		messageElement.classList.remove('hidden');
+		messageElement.classList.remove("hidden");
 	};
 
 	const connect = async () => {
@@ -55,28 +55,28 @@ function initializePlugin() {
 			console.log("Attempting to set global settings with payload:", payload);
 			const result = await SDPIComponents.streamDeckClient.setGlobalSettings(payload);
 			console.log("setGlobalSettings result:", result);
-			
+
 			showMessage("Connected successfully!");
 			showDeviceSettings(true);
 			lockApiKeyField(true);
 		} catch (error) {
-			console.error('Connection error:', error);
+			console.error("Connection error:", error);
 			showMessage(`An error occurred while connecting: ${error.message}. Please try again.`, true);
 		}
 	};
 
 	const refreshApiKey = () => {
-		apiKeyInput.value = '';
+		apiKeyInput.value = "";
 		localApiKey = null;
 		lockApiKeyField(false);
 		showDeviceSettings(false);
-		messageElement.classList.add('hidden');
+		messageElement.classList.add("hidden");
 	};
 
-	connectButton.addEventListener('click', connect);
-	refreshApiKeyButton.addEventListener('click', refreshApiKey);
+	connectButton.addEventListener("click", connect);
+	refreshApiKeyButton.addEventListener("click", refreshApiKey);
 
-	deviceSelect.addEventListener('change', () => {
+	deviceSelect.addEventListener("change", () => {
 		actionSelect.disabled = !deviceSelect.value;
 	});
 

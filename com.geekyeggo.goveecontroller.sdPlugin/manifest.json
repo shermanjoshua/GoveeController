@@ -31,10 +31,7 @@
 					"TitleAlignment": "bottom"
 				}
 			],
-			"Controllers": [
-				"Keypad",
-				"Encoder"
-			],
+			"Controllers": ["Keypad", "Encoder"],
 			"Encoder": {
 				"layout": "$B1",
 				"TriggerDescription": {
@@ -94,6 +91,19 @@
 					"TitleAlignment": "bottom"
 				}
 			]
+		},
+		{
+			"Name": "Snapshot",
+			"UUID": "com.geekyeggo.goveecontroller.snapshot-scene",
+			"Icon": "imgs/actions/diy-scene/action",
+			"PropertyInspectorPath": "ui/snapshot-scene.html",
+			"Tooltip": "Sets the DIY scene of a device",
+			"States": [
+				{
+					"Image": "imgs/actions/diy-scene/key",
+					"TitleAlignment": "bottom"
+				}
+			]
 		}
 	],
 	"Category": "Govee Controller",
@@ -120,3 +130,4 @@
 		}
 	]
 }
+

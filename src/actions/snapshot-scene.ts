@@ -1,4 +1,4 @@
-import streamDeck, { action, Action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction } from "@elgato/streamdeck";
+import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 
 import { goveeClient } from "../govee/client";
 import { DataSourceRequest, DataSourceResponse, trySendDevices } from "../ui";
@@ -6,19 +6,19 @@ import { DataSourceRequest, DataSourceResponse, trySendDevices } from "../ui";
 const GET_SCENES_EVENT = "getScenes";
 
 /**
- * Sets the diy scene of a device.
+ * Sets the snapshot scene of a device.
  */
-@action({ UUID: "com.geekyeggo.goveecontroller.diy-scene" })
-export class DIYScene extends SingletonAction<DIYSceneSettings> {
+@action({ UUID: "com.geekyeggo.goveecontroller.snapshot-scene" })
+export class SnapshotScene extends SingletonAction<SnapshotSceneSettings> {
 	/** @inheritdoc */
-	public async onDidReceiveSettings(ev: DidReceiveSettingsEvent<DIYSceneSettings>): Promise<void> {
+	public async onDidReceiveSettings(ev: DidReceiveSettingsEvent<SnapshotSceneSettings>): Promise<void> {
 		if (ev.payload.settings.deviceId) {
-			await this.sendDiyScenes(ev.action, ev.payload.settings.deviceId);
+			await this.sendSnapshotScenes(ev.action, ev.payload.settings.deviceId);
 		}
 	}
 
 	/** @inheritdoc */
-	public async onKeyDown(ev: KeyDownEvent<DIYSceneSettings>): Promise<void> {
+	public async onKeyDown(ev: KeyDownEvent<SnapshotSceneSettings>): Promise<void> {
 		try {
 			// Ensure we have device identifier.
 			const { deviceId, sceneId } = ev.payload.settings;
@@ -33,45 +33,45 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 
 			// Set the scene.
 			const device = await goveeClient.getDeviceOrThrow(deviceId);
-			await goveeClient.setDIYScene(device, sceneId);
+			await goveeClient.setSnapshotScene(device, sceneId);
 			await ev.action.showOk();
 		} catch (e) {
 			ev.action.showAlert();
-			streamDeck.logger.error("Failed to set DIY scene of device.", e);
+			streamDeck.logger.error("Failed to set Snapshot scene of device.", e);
 		}
 	}
 
 	/** @inheritdoc */
-	public async onSendToPlugin(ev: SendToPluginEvent<DataSourceRequest, DIYSceneSettings>): Promise<void> {
+	public async onSendToPlugin(ev: SendToPluginEvent<DataSourceRequest, SnapshotSceneSettings>): Promise<void> {
 		if (ev.payload.event === GET_SCENES_EVENT) {
 			if (ev.payload.isRefresh) {
 				goveeClient.clearCache();
 			}
 
 			const { deviceId } = await ev.action.getSettings();
-			await this.sendDiyScenes(ev.action, deviceId);
+			await this.sendSnapshotScenes(ev.action, deviceId);
 		} else {
 			await trySendDevices(ev, {
-				instance: "diyScene",
+				instance: "snapshotScene",
 				type: "devices.capabilities.dynamic_scene"
 			});
 		}
 	}
 
 	/**
-	 * Sends the DIY scenes associated with the {@link deviceId} to the property inspector.
-	 * @param action DIY scene Stream Deck Action.
-	 * @param deviceId Device identifier whose DIY scenes should be selected.
+	 * Sends the snapshot scenes associated with the {@link deviceId} to the property inspector.
+	 * @param action snapshot scene Stream Deck Action.
+	 * @param deviceId Device identifier whose snapshot scenes should be selected.
 	 */
-	private async sendDiyScenes(action: Action, deviceId: string | undefined): Promise<void> {
+	private async sendSnapshotScenes(action: Action, deviceId: string | undefined): Promise<void> {
 		if (deviceId === undefined) {
 			return;
 		}
 
-		const getDIYScenes = async (): Promise<DataSourceResponse["items"]> => {
+		const getSnapshotScenes = async (): Promise<DataSourceResponse["items"]> => {
 			try {
 				const device = await goveeClient.getDeviceOrThrow(deviceId);
-				const scenes = (await goveeClient.getDIYScenes(device))
+				const scenes = (await goveeClient.getSnapshotScenes(device))
 					.sort((x, y) => x.name.localeCompare(y.name))
 					.map((s) => {
 						return {
@@ -88,10 +88,10 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 								value: "",
 								label: "No scenes found"
 							}
-						];
+					  ];
 			} catch (e) {
 				action.showAlert();
-				streamDeck.logger.error("Failed to load DIY scenes", e);
+				streamDeck.logger.error("Failed to load SnapshotScene scenes", e);
 
 				return [
 					{
@@ -105,20 +105,20 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 
 		await action.sendToPropertyInspector({
 			event: GET_SCENES_EVENT,
-			items: await getDIYScenes()
+			items: await getSnapshotScenes()
 		} satisfies DataSourceResponse);
 	}
 }
 
 /**
- * Set DIY scene action.
+ * Set Snapshot scene action.
  */
-// type Action = WillAppearEvent<DIYSceneSettings>["action"];
+type Action = WillAppearEvent<SnapshotSceneSettings>["action"];
 
 /**
- * Settings for {@link DIYScene}.
+ * Settings for {@link SnapshotScene}.
  */
-type DIYSceneSettings = {
+type SnapshotSceneSettings = {
 	/**
 	 * The device identifier.
 	 */

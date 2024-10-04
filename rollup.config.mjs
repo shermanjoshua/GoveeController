@@ -14,6 +14,7 @@ const sdPlugin = "com.geekyeggo.goveecontroller.sdPlugin";
  */
 const config = {
 	input: "src/plugin.ts",
+  external: ["ws"],
 	output: {
 		file: `${sdPlugin}/bin/plugin.js`,
 		sourcemap: isWatching,
@@ -29,7 +30,8 @@ const config = {
 			}
 		},
 		typescript({
-			mapRoot: isWatching ? "./" : undefined
+			mapRoot: isWatching ? "./" : undefined,
+			sourceMap: isWatching
 		}),
 		nodeResolve({
 			browser: false,
