@@ -7,8 +7,7 @@ import streamDeck, {
 	SingletonAction,
 	WillAppearEvent,
 	action,
-	type DialAction,
-  type KeyAction
+	type DialAction
 } from "@elgato/streamdeck";
 
 import { clearDebounce, debounce } from "../debounce";

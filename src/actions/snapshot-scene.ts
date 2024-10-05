@@ -1,4 +1,4 @@
-import streamDeck, { action, Action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, { action, Action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction } from "@elgato/streamdeck";
 
 import { goveeClient } from "../govee/client";
 import { DataSourceRequest, DataSourceResponse, trySendDevices } from "../ui";
@@ -52,7 +52,7 @@ export class SnapshotScene extends SingletonAction<SnapshotSceneSettings> {
 			await this.sendSnapshotScenes(ev.action, deviceId);
 		} else {
 			await trySendDevices(ev, {
-				instance: "snapshotScene",
+				instance: "snapshot",
 				type: "devices.capabilities.dynamic_scene"
 			});
 		}
@@ -68,27 +68,30 @@ export class SnapshotScene extends SingletonAction<SnapshotSceneSettings> {
 			return;
 		}
 
+    // This function intentionally works differently than the other dynamic scenes.
+    // Govee currently has no published API endpoint for retrieving snapshot scenes, so we have to use the device `capabilities`.
 		const getSnapshotScenes = async (): Promise<DataSourceResponse["items"]> => {
 			try {
 				const device = await goveeClient.getDeviceOrThrow(deviceId);
-				const scenes = (await goveeClient.getSnapshotScenes(device))
-					.sort((x, y) => x.name.localeCompare(y.name))
-					.map((s) => {
-						return {
-							label: s.name,
-							value: s.value.toString()
-						};
-					});
 
-				return scenes.length > 0
-					? scenes
-					: [
+        const scenes = device.capabilities
+          .filter(c => c.instance === "snapshot" && c.type === "devices.capabilities.dynamic_scene")
+          .flatMap(c => c.parameters.options);
+
+        if (scenes.length > 0) {
+          return scenes.map(s => ({
+            value: s.value.toString(),
+            label: s.name
+          }));
+          } else {
+            return [
 							{
 								disabled: true,
 								value: "",
-								label: "No scenes found"
+								label: "No snapshots found..."
 							}
-					  ];
+						];
+          }
 			} catch (e) {
 				action.showAlert();
 				streamDeck.logger.error("Failed to load SnapshotScene scenes", e);

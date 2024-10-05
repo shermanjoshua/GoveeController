@@ -2,7 +2,7 @@ import streamDeck from "@elgato/streamdeck";
 import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import crypto from "node:crypto";
 import type { GlobalSettings } from "../global-settings";
-import type { CapabilityIdentifier, DIYScene, LightScene, SnapshotScene } from "./capability";
+import type { CapabilityIdentifier, DIYScene, LightScene } from "./capability";
 import type { GoveeResponse } from "./common";
 import type { ControlRequest, ControlResponse } from "./control";
 import type { Device, DeviceMetadata } from "./device";
@@ -139,7 +139,7 @@ class GoveeClient {
 
 	/**
 	 * Gets the current power state of the specified {@link device}.
-	 * @param device Thd device.
+	 * @param device The device.
 	 * @returns Power state.
 	 */
 	public async getPowerState(device: Device): Promise<number> {
@@ -151,32 +151,6 @@ class GoveeClient {
 		}
 
 		return capability.state.value;
-	}
-
-	/**
-	 * Gets the Snapshot scenes for a device.
-	 * @param device The device.
-	 * @returns Available DIY scenes.
-	 */
-	public async getSnapshotScenes(device: Device): Promise<SnapshotScene["parameters"]["options"]> {
-		const res = await axios.post<GoveeResponse<DeviceMetadata>>(
-			// this url is a guess...
-			"https://openapi.api.govee.com/router/api/v1/device/snapshot-scenes",
-			{
-				payload: device,
-				requestId: crypto.randomUUID()
-			},
-			{ headers: await this.getHeaders() }
-		);
-
-		this.validate(res, "Failed to get light scenes.");
-		const [capability] = res.data.payload.capabilities;
-
-		if (capability?.instance === "snapshotScene" && capability.type === "devices.capabilities.dynamic_scene") {
-			return capability.parameters.options;
-		}
-
-		throw new Error("Device does not support Snapshot scenes");
 	}
 
 	/**
@@ -268,7 +242,7 @@ class GoveeClient {
 		await this.control(
 			device,
 			{
-				instance: "snapshotScene",
+				instance: "snapshot",
 				type: "devices.capabilities.dynamic_scene"
 			},
 			sceneId

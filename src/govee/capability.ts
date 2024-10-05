@@ -89,9 +89,9 @@ export type LightScene = CapabilityBase<"lightScene", "devices.capabilities.dyna
 };
 
 /**
- * DIY scene of a the device.
+ * Snapshot scene of a the device.
  */
-export type SnapshotScene = CapabilityBase<"snapshotScene", "devices.capabilities.dynamic_scene"> & {
+export type SnapshotScene = CapabilityBase<"snapshot", "devices.capabilities.dynamic_scene"> & {
 	/**
 	 * Parameters associated with the capability.
 	 */
@@ -101,7 +101,7 @@ export type SnapshotScene = CapabilityBase<"snapshotScene", "devices.capabilitie
 		 */
 		options: {
 			/**
-			 * Name of the light scene.
+			 * Name of the snapshot scene.
 			 */
 			name: string;
 

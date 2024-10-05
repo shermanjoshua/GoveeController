@@ -5,11 +5,17 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Stream Deck Plugin",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
       "program": "src/plugin.ts",
       "preLaunchTask": "npm: watch",
       "outFiles": ["com.geekyeggo.goveecontroller.sdPlugin/bin/plugin.js.map"],
+      "smartStep": true,
       "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/**",
+        "!**/node_modules/**"
+      ],
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
       "env": {
         "NODE_ENV": "development"
@@ -21,7 +27,12 @@
       "name": "Attach to Process",
       "processId": "${command:PickProcess}",
       "outFiles": ["com.geekyeggo.goveecontroller.sdPlugin/bin/plugin.js.map"],
-      "sourceMaps": true
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+        "${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/**",
+      ]
     }
   ],
   "tasks": {

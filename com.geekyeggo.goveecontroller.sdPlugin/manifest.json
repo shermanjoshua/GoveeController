@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
 	"UUID": "com.geekyeggo.goveecontroller",
 	"Name": "Govee Controller",
-	"Version": "2.0.0.2",
+	"Version": "1.3.1.0",
 	"Author": "GeekyEggo",
 	"URL": "https://github.com/GeekyEggo/GoveeController",
 	"Actions": [
@@ -10,7 +10,7 @@
 			"Name": "On / Off",
 			"UUID": "com.geekyeggo.goveecontroller.turnonoff",
 			"Icon": "imgs/actions/turn-on-off/action",
-			"PropertyInspectorPath": "ui/turn-on-off.html",
+			"PropertyInspectorPath": "pi/turn-on-off.html",
 			"Tooltip": "Turns a device on or off",
 			"States": [
 				{
@@ -24,14 +24,17 @@
 			"UUID": "com.geekyeggo.goveecontroller.brightness",
 			"Icon": "imgs/actions/brightness/action",
 			"Tooltip": "Sets the brightness of a device",
-			"PropertyInspectorPath": "ui/brightness.html",
+			"PropertyInspectorPath": "pi/brightness.html",
 			"States": [
 				{
 					"Image": "imgs/actions/brightness/key",
 					"TitleAlignment": "bottom"
 				}
 			],
-			"Controllers": ["Keypad", "Encoder"],
+			"Controllers": [
+				"Keypad",
+				"Encoder"
+			],
 			"Encoder": {
 				"layout": "$B1",
 				"TriggerDescription": {
@@ -45,7 +48,7 @@
 			"UUID": "com.geekyeggo.goveecontroller.color",
 			"Icon": "imgs/actions/color/action",
 			"Tooltip": "Sets the color of a device",
-			"PropertyInspectorPath": "ui/color.html",
+			"PropertyInspectorPath": "pi/color.html",
 			"States": [
 				{
 					"Image": "imgs/actions/color/key",
@@ -58,7 +61,7 @@
 			"UUID": "com.geekyeggo.goveecontroller.colortemperature",
 			"Icon": "imgs/actions/color-temperature/Action",
 			"Tooltip": "Sets the color temperature of a device",
-			"PropertyInspectorPath": "ui/color-temperature.html",
+			"PropertyInspectorPath": "pi/color-temperature.html",
 			"States": [
 				{
 					"Image": "imgs/actions/color-temperature/Key",
@@ -70,7 +73,7 @@
 			"Name": "Scene",
 			"UUID": "com.geekyeggo.goveecontroller.light-scene",
 			"Icon": "imgs/actions/light-scene/action",
-			"PropertyInspectorPath": "ui/light-scene.html",
+			"PropertyInspectorPath": "pi/light-scene.html",
 			"Tooltip": "Sets the light scene of a device",
 			"States": [
 				{
@@ -83,7 +86,7 @@
 			"Name": "DIY",
 			"UUID": "com.geekyeggo.goveecontroller.diy-scene",
 			"Icon": "imgs/actions/diy-scene/action",
-			"PropertyInspectorPath": "ui/diy-scene.html",
+			"PropertyInspectorPath": "pi/diy-scene.html",
 			"Tooltip": "Sets the DIY scene of a device",
 			"States": [
 				{
@@ -95,12 +98,12 @@
 		{
 			"Name": "Snapshot",
 			"UUID": "com.geekyeggo.goveecontroller.snapshot-scene",
-			"Icon": "imgs/actions/diy-scene/action",
-			"PropertyInspectorPath": "ui/snapshot-scene.html",
-			"Tooltip": "Sets the DIY scene of a device",
+			"Icon": "imgs/actions/snapshot/camera",
+			"PropertyInspectorPath": "pi/snapshot-scene.html",
+			"Tooltip": "Sets the Snapshot scene of a device",
 			"States": [
 				{
-					"Image": "imgs/actions/diy-scene/key",
+					"Image": "imgs/actions/snapshot/camera",
 					"TitleAlignment": "bottom"
 				}
 			]
@@ -130,4 +133,3 @@
 		}
 	]
 }
-
