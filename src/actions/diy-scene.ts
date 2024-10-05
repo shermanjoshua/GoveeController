@@ -1,4 +1,4 @@
-import streamDeck, { DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction, action, type Action } from "@elgato/streamdeck";
+import streamDeck, { action, Action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction } from "@elgato/streamdeck";
 
 import { goveeClient } from "../govee/client";
 import { DataSourceRequest, DataSourceResponse, trySendDevices } from "../ui";
@@ -52,7 +52,7 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 			await this.sendDiyScenes(ev.action, deviceId);
 		} else {
 			await trySendDevices(ev, {
-				instance: "lightScene",
+				instance: "diyScene",
 				type: "devices.capabilities.dynamic_scene"
 			});
 		}
@@ -63,7 +63,7 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 	 * @param action DIY scene Stream Deck Action.
 	 * @param deviceId Device identifier whose DIY scenes should be selected.
 	 */
-	private async sendDiyScenes(action: Action<DIYSceneSettings>, deviceId: string | undefined): Promise<void> {
+	private async sendDiyScenes(action: Action, deviceId: string | undefined): Promise<void> {
 		if (deviceId === undefined) {
 			return;
 		}
@@ -88,7 +88,7 @@ export class DIYScene extends SingletonAction<DIYSceneSettings> {
 								value: "",
 								label: "No scenes found"
 							}
-					  ];
+						];
 			} catch (e) {
 				action.showAlert();
 				streamDeck.logger.error("Failed to load DIY scenes", e);

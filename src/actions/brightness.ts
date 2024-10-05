@@ -105,10 +105,13 @@ export class Brightness extends SingletonAction<BrightnessSettings> {
 			await ev.action.setSettings(ev.payload.settings);
 		}
 
-		// When the action is an encoder, set the layout.
 		if (ev.action.isDial()) {
 			await this.setFeedback(ev.action, ev.payload.settings, 0.2);
 		}
+
+    if (ev.action.isKey()) {
+	    await ev.action.showOk();
+    }
 	}
 
 	/**

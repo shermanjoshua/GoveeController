@@ -64,8 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Monitor global settings changing.
 	SDPIComponents.streamDeckClient.didReceiveGlobalSettings.subscribe((globalSettings) => {
-		console.log("HELLO WORLD");
-
 		const apiKey = globalSettings.payload?.settings?.apiKey;
 		isDeviceCollectionDirty = apiKey != localApiKey;
 		localApiKey = apiKey;

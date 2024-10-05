@@ -9,7 +9,7 @@ import type { Device, DeviceMetadata } from "./device";
 import type { StateRequest, StateResponse } from "./state";
 
 let devicesCache: DeviceMetadata[] | undefined = undefined;
-let apiKey: string | undefined;
+let apiKey: string | undefined = undefined;
 
 /**
  * Provides a client capable of interacting with the Govee API.
@@ -139,7 +139,7 @@ class GoveeClient {
 
 	/**
 	 * Gets the current power state of the specified {@link device}.
-	 * @param device Thd device.
+	 * @param device The device.
 	 * @returns Power state.
 	 */
 	public async getPowerState(device: Device): Promise<number> {
@@ -227,6 +227,22 @@ class GoveeClient {
 			device,
 			{
 				instance: "lightScene",
+				type: "devices.capabilities.dynamic_scene"
+			},
+			sceneId
+		);
+	}
+
+	/**
+	 * Sets the Snapshot scene for the specified device.
+	 * @param device The device.
+	 * @param sceneId Scene identifier.
+	 */
+	public async setSnapshotScene(device: Device, sceneId: number): Promise<void> {
+		await this.control(
+			device,
+			{
+				instance: "snapshot",
 				type: "devices.capabilities.dynamic_scene"
 			},
 			sceneId

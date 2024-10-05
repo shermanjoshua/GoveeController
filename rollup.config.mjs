@@ -29,7 +29,8 @@ const config = {
 			}
 		},
 		typescript({
-			mapRoot: isWatching ? "./" : undefined
+			mapRoot: isWatching ? "./" : undefined,
+      sourceMap: isWatching,
 		}),
 		nodeResolve({
 			browser: false,

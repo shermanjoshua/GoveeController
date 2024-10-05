@@ -89,6 +89,31 @@ export type LightScene = CapabilityBase<"lightScene", "devices.capabilities.dyna
 };
 
 /**
+ * Snapshot scene of a the device.
+ */
+export type SnapshotScene = CapabilityBase<"snapshot", "devices.capabilities.dynamic_scene"> & {
+	/**
+	 * Parameters associated with the capability.
+	 */
+	parameters: {
+		/**
+		 * Available light scenes.
+		 */
+		options: {
+			/**
+			 * Name of the snapshot scene.
+			 */
+			name: string;
+
+			/**
+			 * Scene identifier.
+			 */
+			value: number;
+		}[];
+	};
+};
+
+/**
  * Power state of the device.
  */
 export type OnOff = CapabilityBase<"powerSwitch", "devices.capabilities.on_off">;
@@ -121,4 +146,4 @@ type ReduceIdentifiers<T> = T extends CapabilityBase<infer I, infer U> ? Capabil
 /**
  * A capability that defines functionality available to a Govee device.
  */
-export type Capability = Brightness | Color | ColorTemperature | DIYScene | LightScene | OnOff;
+export type Capability = Brightness | Color | ColorTemperature | DIYScene | LightScene | OnOff | SnapshotScene;

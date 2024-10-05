@@ -32,8 +32,16 @@
 				}
 			],
 			"Controllers": [
-				"Keypad"
-			]
+				"Keypad",
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$B1",
+				"TriggerDescription": {
+					"Touch": "Turn on / off",
+					"Rotate": "Set brightness"
+				}
+			}
 		},
 		{
 			"Name": "Color",
@@ -72,8 +80,7 @@
 					"Image": "imgs/actions/light-scene/key",
 					"TitleAlignment": "bottom"
 				}
-			],
-			"VisibleInActionsList": false
+			]
 		},
 		{
 			"Name": "DIY",
@@ -86,8 +93,20 @@
 					"Image": "imgs/actions/diy-scene/key",
 					"TitleAlignment": "bottom"
 				}
-			],
-			"VisibleInActionsList": false
+			]
+		},
+		{
+			"Name": "Snapshot",
+			"UUID": "com.geekyeggo.goveecontroller.snapshot-scene",
+			"Icon": "imgs/actions/snapshot/camera",
+			"PropertyInspectorPath": "pi/snapshot-scene.html",
+			"Tooltip": "Sets the Snapshot scene of a device",
+			"States": [
+				{
+					"Image": "imgs/actions/snapshot/camera",
+					"TitleAlignment": "bottom"
+				}
+			]
 		}
 	],
 	"Category": "Govee Controller",
