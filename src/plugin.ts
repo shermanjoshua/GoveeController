@@ -3,6 +3,7 @@ import { Brightness, Color, ColorTemperature, DIYScene, LightScene, SnapshotScen
 
 console.log("Starting plugin...");
 
+streamDeck.logger.setLevel(LogLevel.DEBUG);
 // Register the actions and connect to Stream Deck.
 streamDeck.actions.registerAction(new Brightness());
 streamDeck.actions.registerAction(new Color());

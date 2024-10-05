@@ -7,7 +7,8 @@ import streamDeck, {
 	SingletonAction,
 	WillAppearEvent,
 	action,
-	type DialAction
+	type DialAction,
+  type KeyAction
 } from "@elgato/streamdeck";
 
 import { clearDebounce, debounce } from "../debounce";
@@ -105,10 +106,13 @@ export class Brightness extends SingletonAction<BrightnessSettings> {
 			await ev.action.setSettings(ev.payload.settings);
 		}
 
-		// When the action is an encoder, set the layout.
-		if (ev.payload.controller === "Encoder" || ev.action.isDial()) {
+		if (ev.action.isDial()) {
 			await this.setFeedback(ev.action, ev.payload.settings, 0.2);
 		}
+
+    if (ev.action.isKey()) {
+	    await ev.action.showOk();
+    }
 	}
 
 	/**

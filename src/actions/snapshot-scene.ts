@@ -1,4 +1,4 @@
-import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, { action, Action, DidReceiveSettingsEvent, KeyDownEvent, SendToPluginEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 
 import { goveeClient } from "../govee/client";
 import { DataSourceRequest, DataSourceResponse, trySendDevices } from "../ui";
@@ -103,17 +103,12 @@ export class SnapshotScene extends SingletonAction<SnapshotSceneSettings> {
 			}
 		};
 
-		await action.sendToPropertyInspector({
+		await streamDeck.ui.current?.sendToPropertyInspector({
 			event: GET_SCENES_EVENT,
 			items: await getSnapshotScenes()
 		} satisfies DataSourceResponse);
 	}
 }
-
-/**
- * Set Snapshot scene action.
- */
-type Action = WillAppearEvent<SnapshotSceneSettings>["action"];
 
 /**
  * Settings for {@link SnapshotScene}.
