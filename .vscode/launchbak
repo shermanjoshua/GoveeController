@@ -1,0 +1,60 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch Stream Deck Plugin",
+			"skipFiles": ["<node_internals>/**", "node_modules/**"],
+			"program": "src/plugin.ts",
+			"preLaunchTask": "npm: watch",
+			"outFiles": ["com.geekyeggo.goveecontroller.sdPlugin/bin/plugin.js.map"],
+			"smartStep": true,
+			"sourceMaps": true,
+			"resolveSourceMapLocations": ["${workspaceFolder}/**", "${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/**", "**/node_modules/**"],
+			"runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+			"env": {
+				"NODE_ENV": "development"
+			}
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to Process",
+			"processId": "${command:PickProcess}",
+			"outFiles": ["com.geekyeggo.goveecontroller.sdPlugin/bin/plugin.js.map"],
+			"sourceMaps": true,
+			"resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**", "${workspaceFolder}/com.geekyeggo.goveecontroller.sdPlugin/bin/**"]
+		}
+	],
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "npm: watch",
+				"type": "npm",
+				"script": "watch",
+				"isBackground": true,
+				"problemMatcher": [
+					{
+						"owner": "typescript",
+						"source": "ts",
+						"applyTo": "closedDocuments",
+						"fileLocation": ["relative", "${workspaceFolder}"],
+						"pattern": {
+							"regexp": "(.*)",
+							"file": 1,
+							"location": 2,
+							"message": 3
+						},
+						"background": {
+							"activeOnStart": true,
+							"beginsPattern": "Starting compilation in watch mode...",
+							"endsPattern": "Found 0 errors. Watching for file changes."
+						}
+					}
+				]
+			}
+		]
+	}
+}

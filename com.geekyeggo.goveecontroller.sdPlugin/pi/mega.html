@@ -2,11 +2,20 @@
 <html>
   <head lang="en-gb">
     <meta charset="utf-8" />
-    <title>Govee Controller | Snapshot Scene Settings</title>
+    <title>Govee Controller | Mega</title>
 
     <link rel="stylesheet" href="./css/main.css" />
-    <!-- <script src="./js/sdpi-components.js"></script> -->
-    <script src="https://sdpi-components.dev/releases/v3/sdpi-components.js"></script>
+    <script>
+      function connectElgatoStreamDeckSocket(inPort, inPropertyInspectorUUID, inRegisterEvent, inInfo, inActionInfo) {
+        const {
+          payload: { controller }
+        } = JSON.parse(inActionInfo);
+        if (controller === "Encoder") {
+          document.querySelector("sdpi-item[label='Mega']").remove();
+        }
+      }
+    </script>
+    <script src="./js/sdpi-components.js"></script>
     <script src="./js/setup.js"></script>
   </head>
 
@@ -16,8 +25,8 @@
         <sdpi-select setting="deviceId" placeholder="" datasource="getDevices" show-refresh label-setting="deviceName"></sdpi-select>
       </sdpi-item>
 
-      <sdpi-item label="Scene">
-        <sdpi-select setting="sceneId" placeholder="" loading=" " datasource="getScenes" hot-reload show-refresh label-setting="sceneName" value-type="number"></sdpi-select>
+      <sdpi-item label="Mega">
+        <sdpi-range setting="Mega" default="50" min="0" max="100" step="1" showlabels></sdpi-range>
       </sdpi-item>
     </div>
 

@@ -12,105 +12,110 @@ export type Color = CapabilityBase<"colorRgb", "devices.capabilities.color_setti
  * Color temperature of the device.
  */
 export type ColorTemperature = CapabilityBase<"colorTemperatureK", "devices.capabilities.color_setting"> & {
-	/**
-	 * Parameters associated with the capability.
-	 */
-	parameters: {
-		/**
-		 * Range parameter.
-		 */
-		range: {
-			/**
-			 * Max value.
-			 */
-			max: number;
+  /**
+   * Parameters associated with the capability.
+   */
+  parameters: {
+    /**
+     * Range parameter.
+     */
+    range: {
+      /**
+       * Max value.
+       */
+      max: number;
 
-			/**
-			 * Min value.
-			 */
-			min: number;
-		};
-	};
+      /**
+       * Min value.
+       */
+      min: number;
+    };
+  };
 };
 
 /**
  * DIY scene of a the device.
  */
 export type DIYScene = CapabilityBase<"diyScene", "devices.capabilities.dynamic_scene"> & {
-	/**
-	 * Parameters associated with the capability.
-	 */
-	parameters: {
-		/**
-		 * Available light scenes.
-		 */
-		options: {
-			/**
-			 * Name of the light scene.
-			 */
-			name: string;
+  /**
+   * Parameters associated with the capability.
+   */
+  parameters: {
+    /**
+     * Available light scenes.
+     */
+    options: {
+      /**
+       * Name of the light scene.
+       */
+      name: string;
 
-			/**
-			 * Scene identifier.
-			 */
-			value: number;
-		}[];
-	};
+      /**
+       * Scene identifier.
+       */
+      value: number;
+    }[];
+  };
 };
 
 /**
  * Light scene of a the device.
  */
 export type LightScene = CapabilityBase<"lightScene", "devices.capabilities.dynamic_scene"> & {
-	/**
-	 * Parameters associated with the capability.
-	 */
-	parameters: {
-		/**
-		 * Available light scenes.
-		 */
-		options: {
-			/**
-			 * Name of the light scene.
-			 */
-			name: string;
+  /**
+   * Parameters associated with the capability.
+   */
+  parameters: {
+    /**
+     * Available light scenes.
+     */
+    options: {
+      /**
+       * Name of the light scene.
+       */
+      name: string;
 
-			/**
-			 * Identifiers of the parameter.
-			 */
-			value: {
-				/**
-				 * Unique identifier.
-				 */
-				id: number;
-			};
-		}[];
-	};
+      /**
+       * Identifiers of the parameter.
+       */
+      value: {
+        /**
+         * Unique identifier.
+         */
+        id: number;
+      };
+    }[];
+  };
 };
+
+/**
+ * Mega-ness of the device.
+ */
+export type MegaValue = CapabilityBase<"mega", "devices.capabilities.range">;
 
 /**
  * Snapshot scene of a the device.
  */
 export type SnapshotScene = CapabilityBase<"snapshot", "devices.capabilities.dynamic_scene"> & {
-	/**
-	 * Parameters associated with the capability.
-	 */
-	parameters: {
-		/**
-		 * Available light scenes.
-		 */
-		options: {
-			/**
-			 * Name of the snapshot scene.
-			 */
-			name: string;
+  /**
+   * Parameters associated with the capability.
+   */
+  parameters: {
+    /**
+     * Available light scenes.
+     */
+    options: {
+      /**
+       * Name of the snapshot scene.
+       */
+      name: string;
 
-			/**
-			 * Scene identifier.
-			 */
-			value: number;
-		}[];
-	};
+      /**
+       * Scene identifier.
+       */
+      value: number;
+    }[];
+  };
 };
 
 /**
@@ -122,15 +127,15 @@ export type OnOff = CapabilityBase<"powerSwitch", "devices.capabilities.on_off">
  * Base structure for all capability.
  */
 type CapabilityBase<I extends string, T extends string> = {
-	/**
-	 * The instance that identifies the capability.
-	 */
-	instance: I;
+  /**
+   * The instance that identifies the capability.
+   */
+  instance: I;
 
-	/**
-	 * The type that identifies the capability.
-	 */
-	type: T;
+  /**
+   * The type that identifies the capability.
+   */
+  type: T;
 };
 
 /**
@@ -146,4 +151,4 @@ type ReduceIdentifiers<T> = T extends CapabilityBase<infer I, infer U> ? Capabil
 /**
  * A capability that defines functionality available to a Govee device.
  */
-export type Capability = Brightness | Color | ColorTemperature | DIYScene | LightScene | OnOff | SnapshotScene;
+export type Capability = Brightness | Color | ColorTemperature | DIYScene | LightScene | MegaValue | OnOff | SnapshotScene;

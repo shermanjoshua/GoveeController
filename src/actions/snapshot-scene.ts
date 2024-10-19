@@ -68,30 +68,28 @@ export class SnapshotScene extends SingletonAction<SnapshotSceneSettings> {
 			return;
 		}
 
-    // This function intentionally works differently than the other dynamic scenes.
-    // Govee currently has no published API endpoint for retrieving snapshot scenes, so we have to use the device `capabilities`.
+		// This function intentionally works differently than the other dynamic scenes.
+		// Govee currently has no published API endpoint for retrieving snapshot scenes, so we have to use the device `capabilities`.
 		const getSnapshotScenes = async (): Promise<DataSourceResponse["items"]> => {
 			try {
 				const device = await goveeClient.getDeviceOrThrow(deviceId);
 
-        const scenes = device.capabilities
-          .filter(c => c.instance === "snapshot" && c.type === "devices.capabilities.dynamic_scene")
-          .flatMap(c => c.parameters.options);
+				const scenes = device.capabilities.filter((c) => c.instance === "snapshot" && c.type === "devices.capabilities.dynamic_scene").flatMap((c) => c.parameters.options);
 
-        if (scenes.length > 0) {
-          return scenes.map(s => ({
-            value: s.value.toString(),
-            label: s.name
-          }));
-          } else {
-            return [
-							{
-								disabled: true,
-								value: "",
-								label: "No snapshots found..."
-							}
-						];
-          }
+				if (scenes.length > 0) {
+					return scenes.map((s) => ({
+						value: s.value.toString(),
+						label: s.name
+					}));
+				} else {
+					return [
+						{
+							disabled: true,
+							value: "",
+							label: "No snapshots found..."
+						}
+					];
+				}
 			} catch (e) {
 				action.showAlert();
 				streamDeck.logger.error("Failed to load SnapshotScene scenes", e);

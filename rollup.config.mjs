@@ -21,6 +21,10 @@ const config = {
 			return url.pathToFileURL(path.resolve(path.dirname(sourcemapPath), relativeSourcePath)).href;
 		}
 	},
+	serve: {
+		host: "localhost",
+		port: 9230
+	},
 	plugins: [
 		{
 			name: "watch-externals",
@@ -30,7 +34,7 @@ const config = {
 		},
 		typescript({
 			mapRoot: isWatching ? "./" : undefined,
-      sourceMap: isWatching,
+			sourceMap: isWatching
 		}),
 		nodeResolve({
 			browser: false,
